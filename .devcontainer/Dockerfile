@@ -13,5 +13,3 @@ RUN apt-get update && apt-get install --yes --no-install-recommends default-jre-
 RUN curl https://raw.githubusercontent.com/nvm-sh/nvm/b5165ec/nvm.sh --create-dirs -o ~/.nvm/nvm.sh
 RUN source ~/.bashrc && nvm install 14 && npm -g config set user root
 RUN source ~/.bashrc && npm install -g @fluencelabs/fldist @fluencelabs/aqua-cli
-
-RUN git clone https://github.com/fluencelabs/examples
