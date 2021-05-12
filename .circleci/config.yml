@@ -8,6 +8,7 @@ jobs:
     executor: docker/docker
     resource_class: xlarge
     steps:
+      - checkout
       - setup_remote_docker
       - docker/check:
           docker-password: DOCKERHUB_TOKEN
