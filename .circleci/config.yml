@@ -23,9 +23,11 @@ jobs:
       - docker/build:
           image: fluencelabs/devcontainer
           tag: ${DOCKER_TAG}
+          path: .devcontainer
       - docker/push:
           image: fluencelabs/devcontainer
           tag: ${DOCKER_TAG}
+          path: .devcontainer
 
 workflows:
   version: 2
