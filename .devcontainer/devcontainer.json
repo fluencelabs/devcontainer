@@ -8,6 +8,6 @@
 	},
 	"extensions": [],
 	"remoteUser": "root",
-	"postCreateCommand": "bash -i -c 'git clone https://github.com/fluencelabs/examples'",
+	"postCreateCommand": "bash -i -c 'download_code.sh'",
 	"workspaceFolder": "./examples"
 }

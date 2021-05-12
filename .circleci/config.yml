@@ -1,0 +1,34 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@1.5.0
+
+jobs:
+  Publish Docker Container:
+    executor: docker/docker
+    resource_class: xlarge
+    steps:
+      - setup_remote_docker
+      - docker/check:
+          docker-password: DOCKERHUB_TOKEN
+          docker-username: DOCKERHUB_USERNAME
+
+      - run: |
+          if [ "$CIRCLE_BRANCH" = "master" ]; then
+            echo "export DOCKER_TAG=latest" >> $BASH_ENV
+          else
+            echo "export DOCKER_TAG=$CIRCLE_BRANCH" >> $BASH_ENV
+          fi
+
+      - docker/build:
+          image: fluencelabs/devcontainer
+          tag: ${DOCKER_TAG}
+      - docker/push:
+          image: fluencelabs/devcontainer
+          tag: ${DOCKER_TAG}
+
+workflows:
+  version: 2
+  CircleCI:
+    jobs:
+      - Publish Docker Container:
