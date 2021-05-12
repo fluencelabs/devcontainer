@@ -31,4 +31,4 @@ workflows:
   version: 2
   CircleCI:
     jobs:
-      - Publish Docker Container:
+      - Publish Docker Container
