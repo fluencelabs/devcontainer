@@ -15,7 +15,7 @@ jobs:
           docker-username: DOCKERHUB_USERNAME
 
       - run: |
-          if [ "$CIRCLE_BRANCH" = "master" ]; then
+          if [ "$CIRCLE_BRANCH" = "main" ]; then
             echo "export DOCKER_TAG=latest" >> $BASH_ENV
           else
             echo "export DOCKER_TAG=$CIRCLE_BRANCH" >> $BASH_ENV
