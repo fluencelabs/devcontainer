@@ -4,6 +4,7 @@ COPY .profile /root/.bashrc
 SHELL ["/bin/bash", "--rcfile", "/root/.bashrc", "-c"]
 COPY download_examples.sh /download_examples.sh
 COPY greetings.sh /greetings.sh
+COPY persist_greetings.sh /persist_greetings.sh
 
 RUN rustup default nightly
 RUN rustup target add wasm32-wasi
@@ -16,4 +17,4 @@ RUN curl https://raw.githubusercontent.com/nvm-sh/nvm/b5165ec/nvm.sh --create-di
 RUN source ~/.bashrc && nvm install 14 && npm -g config set user root
 RUN source ~/.bashrc && npm install -g @fluencelabs/fldist @fluencelabs/aqua-cli
 
-RUN /greetings.sh
+RUN bash persist_greetings.sh /etc/bash.bashrc
