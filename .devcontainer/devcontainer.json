@@ -8,6 +8,6 @@
 	},
 	"extensions": [],
 	"remoteUser": "root",
-	"postCreateCommand": "bash -i -c 'download_code.sh'",
+	"postCreateCommand": "bash -i -c 'download_examples.sh'",
 	"workspaceFolder": "./examples"
 }
