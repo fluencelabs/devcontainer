@@ -6,7 +6,10 @@ git clone --depth 1 https://github.com/fluencelabs/examples.git fluence/examples
 git clone --depth 1 https://github.com/fluencelabs/aqua-playground.git fluence/aqua-playground || true
 git clone --depth 1 https://github.com/fluencelabs/fluentpad.git fluence/fluentpad || true
 
-echo "Source code to learn from:"
-echo "\t AIR + Rust examples:\t fluence/examples"
-echo "\t Aqua + Typescript examples:\t fluence/aqua-playground"
-echo "\t Frontend + backend project written in Aqua:\t fluence/fluentpad"
+echo '
+=======
+Source code to learn from:
+    fluence/examples         –  AIR + Rust examples                      
+    fluence/aqua-playground  –  Aqua + Typescript examples              
+    fluence/fluentpad        -  Frontend + backend project written in Aqua
+'
