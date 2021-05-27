@@ -58,4 +58,5 @@ workflows:
   version: 2
   CircleCI:
     jobs:
-      - Publish Docker Container
+      - Publish DevContainer Image
+      - Publish Rust-NPM-Java Image
