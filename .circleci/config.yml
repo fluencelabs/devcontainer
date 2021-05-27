@@ -4,7 +4,7 @@ orbs:
   docker: circleci/docker@1.5.0
 
 jobs:
-  Publish Docker Container:
+  Publish DevContainer Image:
     executor: docker/docker
     resource_class: xlarge
     steps:
@@ -27,6 +27,31 @@ jobs:
           path: .devcontainer
       - docker/push:
           image: fluencelabs/devcontainer
+          tag: ${DOCKER_TAG}
+
+  Publish Rust-NPM-Java Image:
+    executor: docker/docker
+    resource_class: xlarge
+    steps:
+      - checkout
+      - setup_remote_docker
+      - docker/check:
+          docker-password: DOCKERHUB_TOKEN
+          docker-username: DOCKERHUB_USERNAME
+
+      - run: |
+          if [ "$CIRCLE_BRANCH" = "main" ]; then
+            echo "export DOCKER_TAG=latest" >> $BASH_ENV
+          else
+            echo "export DOCKER_TAG=$CIRCLE_BRANCH" >> $BASH_ENV
+          fi
+
+      - docker/build:
+          image: fluencelabs/rust-npm-java
+          tag: ${DOCKER_TAG}
+          path: rust-npm-java.Dockerfile
+      - docker/push:
+          image: fluencelabs/rust-npm-java
           tag: ${DOCKER_TAG}
 
 workflows:
