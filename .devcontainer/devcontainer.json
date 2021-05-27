@@ -6,8 +6,10 @@
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash"
 	},
-	"extensions": [],
+	"extensions": [
+		"FluenceLabs.aqua-syntax-highlight"
+	],
 	"remoteUser": "root",
-	"postCreateCommand": "bash -i -c 'bash download_examples.sh && bash greetings.sh'",
-	"workspaceFolder": "./examples"
+	"postCreateCommand": "bash -i -c 'bash /download_examples.sh; bash /greetings.sh'",
+	"workspaceFolder": "/workspaces/devcontainer/fluence"
 }
