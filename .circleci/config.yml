@@ -50,6 +50,7 @@ jobs:
           image: fluencelabs/rust-npm-java
           tag: ${DOCKER_TAG}
           dockerfile: rust-npm-java.Dockerfile
+          path: .devcontainer/.aux
       - docker/push:
           image: fluencelabs/rust-npm-java
           tag: ${DOCKER_TAG}
