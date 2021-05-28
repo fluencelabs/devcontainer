@@ -1,6 +1,6 @@
 FROM rust:1.52 as rust-npm-java
 
-COPY .profile /root/.bashrc
+COPY .devcontainer/.aux/.profile /root/.bashrc
 SHELL ["/bin/bash", "--rcfile", "/root/.bashrc", "-c"]
 
 RUN rustup default nightly

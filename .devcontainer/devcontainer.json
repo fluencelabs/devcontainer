@@ -10,6 +10,6 @@
 		"FluenceLabs.aqua-syntax-highlight"
 	],
 	"remoteUser": "root",
-	"postCreateCommand": "bash -i -c 'bash /download_examples.sh; bash /greetings.sh'",
-	"workspaceFolder": "/workspaces/devcontainer/fluence"
+	"postCreateCommand": "bash -i -c 'cd fluence; bash /download_examples.sh; bash /greetings.sh'",
+	"workspaceFolder": "${containerWorkspaceFolder}/fluence"
 }
