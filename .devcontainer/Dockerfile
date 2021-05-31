@@ -8,6 +8,6 @@ COPY .devcontainer/.aux/download_examples.sh /download_examples.sh
 COPY .devcontainer/.aux/greetings.sh /greetings.sh
 COPY .devcontainer/.aux/persist_greetings.sh /persist_greetings.sh
 
-RUN cargo install marine mrepl
+RUN cargo install marine mrepl cargo-generate
 
 RUN bash persist_greetings.sh /etc/bash.bashrc
