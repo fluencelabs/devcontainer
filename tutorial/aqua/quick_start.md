@@ -55,7 +55,7 @@ fldist --node-id 12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA  get_modul
 root@56892f4726bb:/workspaces/devcontainer/aqua-tutorial#
 ```
 
-Now that we know our service exists, we can check on its interface(s) also with the`flidst` commandline tool:
+Now that we know that the module underlying our service exists, we can check on its interface(s) also with the`flidst` commandline tool:
 
 ```bash
 root@56892f4726bb:/workspaces/devcontainer/aqua-tutorial# fldist --node-id 12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA  get_interface --id c9a315de-4fe2-4730-8f40-9209428383bc --expand
@@ -97,27 +97,27 @@ root@56892f4726bb:/workspaces/devcontainer/aqua-tutorial#
 In the *aqua* dir, add the following Aqua script *greeter.aqua*:
 
 ```aqua
--- greeter.aqua                             <-- 1
-service Local("returnService"):             <-- 2
+-- greeter.aqua                             --< 1
+service Local("returnService"):             --< 2
   run: string -> ()
 
-service Greeting("service-id"):             <-- 3
+service Greeting("service-id"):             --< 3
     greeting: string, bool -> string
 
-func greeter(name: string, greet: bool, node: string, service_id: string):  <-- 4
+func greeter(name: string, greet: bool, node: string, service_id: string):  --< 4
     on node:                                                      
       Greeting service_id
       res <- Greeting.greeting(name, greet)
     Local.run(res)
 ```
 
-Basically, we just created a script that instructs the Aqua runtime (Aqua VM) on node *peer_id* to execute the service *service_id* with the parameters *name* and *greet* and then to return the result to the local application. This is all happening in the *greeter* func (4) and uses the service interface representation of the deployed service, *service Greeting* (3) and the *service Local* (2) to accomplish our goal. Note, inline comments in Aqua are prefixed by a double dash *--* (1).
+Basically, we just created a script that instructs the Aqua runtime (Aqua VM) on node *node* to execute the service *service_id* with the parameters *name* and *greet* and then to return the result to the local application. This is all happening in the *greeter* func (4) and uses the service interface representation of the deployed service, *service Greeting* (3) and the *service Local* (2) to accomplish our goal. Note, inline comments in Aqua are prefixed by a double dash *--* (1).
 
-Now that we have or script, let's compile it to AIR. In your *aqua-tutorial* directory, create a dir *air-scripts* and call the aqua compiler:
+Now that we have our script, let's compile it to AIR. In your *aqua-tutorial* directory, create a dir *air-scripts* and call the aqua compiler:
 
 ```bash
-root@56892f4726bb:/workspaces/devcontainer/aqua-tutorial# aqua-cli --input aqua --output air-scripts  -a
-java -jar /root/.nvm/versions/node/v14.17.0/lib/node_modules/@fluencelabs/aqua-cli/aqua-cli.jar --input aqua --output air-scripts -a
+root@56892f4726bb:/workspaces/devcontainer/aqua-tutorial# aqua-cli --input aqua --output air-scripts  --air
+java -jar /root/.nvm/versions/node/v14.17.0/lib/node_modules/@fluencelabs/aqua-cli/aqua-cli.jar --input aqua --output air-scripts --air
 
 Compiled /workspaces/devcontainer/aqua-tutorial/air-scripts/greeter.greeter.air
 
@@ -183,4 +183,4 @@ And voila, we got a result certainly meets our expectations. Make sure to change
 ]
 ```
 
-Congratulations! You have successfully created and compiled your first Aqua script for an already deployed distributed service and executed the script with the `fldist` commandline tool. The remaining two sections in this quick start tutorial show you how to create the Wasm module underlying our greeting service and how to deploy modules and services to peer-to-peer noes.
+Congratulations! You have successfully created and compiled your first Aqua script for an already deployed service and executed the script with the `fldist` commandline tool. For more exmaples, clone the [Aqua-Playground](https://github.com/fluencelabs/aqua-playground) to your workspace. The remaining two sections in this quick start tutorial show you how to create the Wasm module underlying our greeting service and how to deploy modules and services to peer-to-peer nodes.

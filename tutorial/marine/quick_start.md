@@ -102,32 +102,31 @@ As illustrated in Figure 1 above, the Config.toml file is required for the local
 1. Location of the wasm module to be executed by Marine
 2. One or mode module specific runtime requirements such as module name, logging particulars, local access and memory allocation, Recall, [Wasm memory](https://webassembly.github.io/spec/core/exec/runtime.html#memory-instances) is allocated in linear pages of 64Ki each.
 
-As evident by the existence of the main.rs file, Marine Wasm modules are created as binaries and as we see below, the Marine toolchain compiles our Rust code to the desired wasm32-wasi target. Due to our the Wasm IT target, our Rust files look a little different than Rust application or even wasm-bindgen code.
+As evident by the existence of the main.rs file, Marine Wasm modules are created as binaries and as we see below, the Marine toolchain compiles our Rust code to the desired wasm32-wasi target. Due to the Wasm Interface Types (IT) target, our Rust files look a little different than Rust application or even wasm-bindgen code.
 
 ```rust
 // main.rs
-use fluence::{marine, module_manifest, WasmLoggerBuilder};  <-- 1
+use fluence::{marine, module_manifest, WasmLoggerBuilder};  // <-- 1
 
 module_manifest!();  <-- 2
 
-pub fn main() {
-    WasmLoggerBuilder::new().build().unwrap();  <-- 3
+pub fn main() { // <-- 3
+    WasmLoggerBuilder::new().build().ok();  // <-- 4
 }
 
-#[marine]  <-- 4
-pub fn greeting(name: String) -> String {  <-- 5
+#[marine]  // <-- 5
+pub fn greeting(name: String) -> String {  // <-- 6
     format!("Hi, {}", name)
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::greeting;
-    use fluence_test::marine_test; <-- 6
+    use fluence_test::marine_test; // <-- 7
 
     #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts")]
     fn test_greeting() {
         let name = "Marine".to_string();
-        let res = greeting(name.clone());
+        let res = greeting.greeting(name.clone());
         assert_eq!(res, format!("Hi, {}", name));
     }
 }
@@ -135,15 +134,16 @@ mod tests {
 
 1. We import the necessary dependencies from the fluence crate
 2. The module_manifest macro provides the module version, if needed
-3. Logging is available as via this Fluence crate, which is a feature we need to turn on in our Cargo.toml, if desired
-4. Macro enabling and enforcing our wasm32-wasi types for export as module API
-5. Implementation of exposed, callable Wasm module function
-6. Marine-Test macro to allow unit testing with the (standard) cargo test tool
+3. main function is called when service is started: first on deploy, and then on every host restart
+4. Logging is available as via this Fluence crate, which is a feature we need to turn on in our Cargo.toml, if desired
+5. Macro enabling and enforcing our wasm32-wasi types for export as module API
+6. Implementation of exposed, callable Wasm module function
+7. Marine-Test macro to allow unit testing with the (standard) cargo test tool
 
 Now that we got our code and metadata files in place, it's finally time to build our greeting module. Let's start with running the unit test:
 
 ```rust
-root@56892f4726bb:/workspaces/devcontainer/greeter# cargo test
+root@56892f4726bb:/workspaces/devcontainer/greeter# cargo test --release
 warning: unused manifest key: dev
   Downloaded memoffset v0.6.4
   Downloaded strsim v0.10.0
@@ -165,6 +165,8 @@ It's time to build our greeting Wasm module for which we use our build script:
 
 ```bash
 #!/usr/bin/env bash
+#
+#./scripts/build.sh
 
 mkdir -p artifacts              <-- 1
 rm -f artifacts/*.wasm
@@ -248,14 +250,13 @@ pub fn greeting(name: String, greeter: bool) -> String {
 
 #[cfg(test)]
 mod tests {
-    use crate::greeting;
     use fluence_test::marine_test;
 
     #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts")]
     fn test_greeting() {
         let name = "Marine".to_string();
 
-        let res = greeting(name.clone(), true);
+        let res = greeting.greeting(name.clone(), true);
         assert_eq!(res, format!("Hi, {}", name));
 
         let res = greeting(name.clone(), false);
