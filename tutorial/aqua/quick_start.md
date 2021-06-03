@@ -5,7 +5,7 @@ Aqua is Fluence Labs' programming language facilitating the composition of appli
 
 Figure 1: Aqua Development And Execution Model
 
-```mermaid
+```mermaid 
   stateDiagram
   state "Code Workflow In Aqua" as Aqua
   state "Compile Aqua script to AIR" as AIR
@@ -124,46 +124,7 @@ Compiled /workspaces/devcontainer/aqua-tutorial/air-scripts/greeter.greeter.air
 root@56892f4726bb:/workspaces/devcontainer/aqua-tutorial#
 ```
 
-which results in the low level language representation:
-
-```clojure
-(xor
- (seq
-  (seq
-   (seq
-    (seq
-     (seq
-      (seq
-       (seq
-        (seq
-         (call %init_peer_id% ("getDataSrv" "-relay-") [] -relay-)
-         (call %init_peer_id% ("getDataSrv" "name") [] name)
-        )
-        (call %init_peer_id% ("getDataSrv" "greet") [] greet)
-       )
-       (call %init_peer_id% ("getDataSrv" "node") [] node)
-      )
-      (call %init_peer_id% ("getDataSrv" "service_id") [] service_id)
-     )
-     (call -relay- ("op" "identity") [])
-    )
-    (xor
-     (call node (service_id "greeting") [name greet] res)
-     (seq
-      (call -relay- ("op" "identity") [])
-      (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
-     )
-    )
-   )
-   (call -relay- ("op" "identity") [])
-  )
-  (call %init_peer_id% ("returnService" "run") [res])
- )
- (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 2])
-)
-```
-
-Needless to say, writing Aqua scripts has its definitive advantages over writing low level AIR scripts by hand.
+which results in the *greeter.greeter.air* file in the *aqua-scripts* directory. If you are intersted in he the low level language representation of our Aqua script, take a look. Needless to say, writing Aqua scripts has its definitive advantages over writing low level AIR scripts by hand.
 
 Using `fldist`, we can execute the AIR script:
 
@@ -175,7 +136,7 @@ root@56892f4726bb:/workspaces/devcontainer/aqua-tutorial# fldist --node-id 12D3K
 root@56892f4726bb:/workspaces/devcontainer/aqua-tutorial# 
 ```
 
-And voila, we got a result certainly meets our expectations. Make sure to change the greet param to *false* and that the results corresponds to:
+And voila, the result certainly meets our expectations. Make sure to change the greet parameter to *false*, run the `fldist` command from above agin and the result should corresponds to:
 
 ```bash
 [
