@@ -1,6 +1,6 @@
 # Aqua Quickstart
 
-Our goal is to create applications from business logic, aka services, available of various peers of a peer-to-peer network. Most simplistically, that involves us wanting to send some data to a service, have that service return the output of executing its business logic on the provided inputs and then manage to get that result back to the client.
+Our goal is to create applications from business logic available on various peers of a peer-to-peer network. Most simplistically, that involves sending some data to a service, have that service execute its business logic on the provided data and then get the result back to the client.
 
 Figure 1: Stylized Application From Distributed Services
 
