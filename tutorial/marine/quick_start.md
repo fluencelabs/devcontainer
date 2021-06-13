@@ -125,8 +125,8 @@ mod tests {
 
     #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts")]
     fn test_greeting() {
-        let name = "Marine".to_string();
-        let res = greeting.greeting(name.clone());
+        let name = "Marine";
+        let res = greeting.greeting(name.to_string());
         assert_eq!(res, format!("Hi, {}", name));
     }
 }
@@ -168,10 +168,10 @@ It's time to build our greeting Wasm module for which we use our build script:
 #
 #./scripts/build.sh
 
-mkdir -p artifacts              <-- 1
+mkdir -p artifacts              # <-- 1
 rm -f artifacts/*.wasm
-marine build --release          <-- 2
-cp target/wasm32-wasi/release/greeter.wasm artifacts/       <-- 3
+marine build --release          # <-- 2
+cp target/wasm32-wasi/release/greeter.wasm artifacts/       # <-- 3
 ```
 
 1. If not already in place´, we create a convenience location for our wasm module(s)
@@ -254,12 +254,12 @@ mod tests {
 
     #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts")]
     fn test_greeting() {
-        let name = "Marine".to_string();
+        let name = "Marine";
 
-        let res = greeting.greeting(name.clone(), true);
+        let res = greeting.greeting(name.to_string(), true);
         assert_eq!(res, format!("Hi, {}", name));
 
-        let res = greeting(name.clone(), false);
+        let res = greeting.greeting(name.clone(), false);
         assert_eq!(res, format!("Bye, {}", name));
     }
 }

@@ -1,22 +1,22 @@
 # Aqua Quickstart
 
-Our goal is to create applications from business logic available on various peers of a peer-to-peer network. Most simplistically, that involves sending some data to a service, have that service execute its business logic on the provided data and then get the result back to the client.
+Our goal is to create applications from business logic available on different peers of a peer-to-peer network. Most simplistically, that involves sending some data to a distributed service, have that service execute its business logic on the provided data and get the result back to the client.
 
-Figure 1: Stylized Application From Distributed Services
+**Figure 1: Stylized Application From Distributed Services**
 
 ```mermaid
   sequenceDiagram
   participant client as ClientApp
-  participant peer as (Peer, Service)
+  participant peer as (Peer i, Service j)
 
   client ->> peer: send input data
   peer ->> peer: operate on inputs
   peer ->> client: return result 
 ```
 
-In order to accomplish our goal, Fluence Labs is offering Aqua: an open source programming language purpose-designed to give developers an ergonomic tool to compose applications from peer-to-peer services.
+In order to accomplish our goal we use [Aqua](https://github.com/fluencelabs/aqua) -- an open source programming language purpose-designed to give developers an ergonomic tool to compose applications and backends from services deplyed on peer-to-peer network.
 
-For the purpose of this section, we will use a greeting service, which returns either "Hi, {name}" or "Bye, {name}" depending on the values of its signature parameters _name_, a string, and _greet_, a boolean. Armed with that information, we can now write our first Aqua script and get us some distributed greetings.
+For our Tour de Aqua, we use a greeting service which returns either "Hi, {name}" or "Bye, {name}" depending on the values of its signature parameters _name_, a string, and _greet_, a boolean. Armed with that information, we can now write our first Aqua script and get us some distributed greetings.
 
 ```aqua
 -- greeter.aqua                             --< 1
@@ -31,26 +31,26 @@ func greeter(name: string, greet: bool, node: string, service_id: string) -> str
     <- service_result
 ```
 
-As intended, our Aqua script calls a remote service with the parameters ouf our choice and then directs the result back to our local client application. More specifically,
+Our script calls a remote service with the parameter values ouf our choice and then directs the result back to our local client application. More specifically,
 
-1. Our file is named greeter.aqua and double dashes, **--**, denote a **comment**
+1. Our file is named *greeter.aqua* and double dashes, **--**, denote an inline **comment**
 2. We create an interface representation of the remote service
-   * _Greeting_ for "service-id", i.e., the id of the remote services, where **service** denotes a remote service binding
-   * with the service function name _greeting_ and input and output types -- `string` for the _name_ and `bool` for the _greet_ parameter, respectively, and `string` for the output, i.e., service return, value
+   * _Greeting_ for "service-id", i.e., the id of the remote service, where the keyword **service** denotes a remote service binding
+   * with the service function name _greeting_ and input and output types -- `string` for the _name_ and `bool` for the _greet_ parameter, respectively, and `string` for the output
 3. We create a callable function _greeter_ which
-   * takes _name_, _greet_ ... _node_, _service_
-   * specifies the target node hosting the target service, i.e. the node hosting the _greeting_ service
-   * instantiates the _Greeting_ service binding to the provided _service_id_
+   * takes _name_, _greet_ , _node_, _service_ parameters -- _name_ and _greet_ are for our remote greeting serivce and _node_, _service_ are for Aqua to locate the _greeting_ serivce in the peer-to-peer network
+   * specifies the target node hosting the target service, i.e. the node specified by _node_ parameters hosting the _greeting_ service identified by the *service_id* parameter
+   * instantiates the _Greeting_ service binding to the provided *service_id*
    * calls the Greeting service function greeting with the _name_ and _greet_ values which produces the result *service_result*
    * return *service_result* to the local client application
   
-You can find the _greeter.aqua_ file in the `aqua/sample-code/aqua-scripts` folder. Now that we have our Aqua script, we need to compile it using the `air-cli` tool. In the aqua directory:
+You can find the _greeter.aqua_ file in the `../tutorial/sample-code/aqua-scripts` folder. Now that we have our Aqua script, we compile it using the `air-cli` tool. In the *sample-code* directory:
 
 ```bash
-aqua_cli --input sample-code/aqua-scripts --output sample-code/air-scripts -a
+aqua-cli --input aqua-scripts --output air-scripts -a
 ```
 
-where `sample-code/aqua-scripts` contains the aqua script we want to compile, i.e., _greeter/aqua_, and the compilation output files got to `sample-code/air-scripts`. Now that we have the compiled script, we can use the command line utility `fldist` to execute the script.
+where `sample-code/aqua-scripts` contains the aqua script we want to compile, i.e., _greeter/aqua_, and the compilation output files go to `sample-code/air-scripts`. Now that we have the compiled script, we can use the command line utility `fldist` to execute the script.
 
 ```bash
 fldist \
@@ -90,7 +90,7 @@ The result
 ]
 ```
 
-certainly meets our expectations. Make sure to change the greet parameter in the json string to *false* and run the `fldist` command from above again> Now, the result reads:
+certainly meets our expectations. Make sure to change the _greet_ parameter in the json string to *false* and run the `fldist` command from above again. Now, the result reads:
 
 ```bash
 [
@@ -100,7 +100,7 @@ certainly meets our expectations. Make sure to change the greet parameter in the
 
 Congratulations! You have successfully created and compiled your first Aqua script for a deployed service and executed the script with the `fldist` command line tool. Moreover, you modified one of the user data values and once again utilized the deployed service to compute the result.
 
-Aqua is an expressive language extremely well suited for composing distributed services into applications. While a full review of Aqua is beyond the scope of this tutorial, we want to introduce a few more fundamental concepts.
+Aqua is an expressive language developed for composing distributed services into applications. While a full review of Aqua is beyond the scope of this tutorial, we want to introduce a few more fundamental concepts.
 
 In our greeter func, we passed the node and service ids to the *greeter* function:
 
@@ -114,7 +114,7 @@ func greeter(name: string, greet: bool, node: string, service_id: string) -> str
     <- service_result
 ```
 
-To improve both readability and future use of our script, we can declare a *NodeServicePair* structure to represent both node and service id and update the function signature and body accordingly:
+To improve both readability and future use of our script, we can declare a *NodeServicePair* composite data type for _node_ and *service id* with the **data** keyword and update the function signature and body accordingly:
 
  ```aqua
 -- greeter_better.aqua
@@ -132,7 +132,12 @@ func greeter(name: string, greet: bool, host_service:NodeServicePair) -> string:
     <- service_result
 ```
 
-See `sample-code/aqua-scripts//greeter_better.aqua` for the code, which was compiled with the previous aqua-cli compile command to  `sample-code/air-scripts//greeter_better.greeter.air`. Before we can run our new and improved script, we need to update our user data structure to reflect the implementation changes:
+See `sample-code/aqua-scripts//greeter_with_struct.aqua` for the code, which was compiled with the previous _aqua-cli_ compile command to  `sample-code/air-scripts//greeter_with_struct.greeter.air`. Before we can run our new and improved script, we need to update our user data structure to reflect the implementation changes:
+
+```bash
+-d '{"host_service":{"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA"}, "name": "Aquamarine", "greet": false}'
+```
+and with that we can run our imporved version:
 
 ```bash
 fldist \
@@ -151,18 +156,18 @@ Which yields the expected result:
 ]
 ```
 
-Please not that Aqua type checks. Let's illustrate type chcking with a small change to our user data. That is, we replace the boolean value _true_  with an int -- a rather common substituion:
+Please note that Aqua is strongly typed. Let's illustrate type checking with a small change to our user data. That is, we replace the boolean value _true_  with an int -- a rather common substituion in some programming languages:
 
 ```bash
 fldist \
 --node-id 12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA \
 run_air \
 -p sample-code/air-scripts/greeter_better.greeter.air \
- -d '{"host_service":{"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA"}, "name": "Aquamarine", "greet": false}' \
+ -d '{"host_service":{"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA"}, "name": "Aquamarine", "greet": 0}' \
  --generated
  ```
 
-Which yields and exception due to the type error:
+Which yields an exception due to the type error:
 
 ```bash
 Something went wrong!
@@ -172,7 +177,17 @@ Something went wrong!
 }
 ```
 
-Before we conclude this section and move on to service development, let's expand our data structure like below and *parallelize* the use of the _greeter_ service:
+So far so good. Of course, one service makes for sad-sack composition. Let's change that and utilize another service that takes an array of (_name_, _greet_) tuples and returns them as an array of structs. Let's call that service *echo_service* and think of it as a proxy for any number of services, e.g., a database query service.
+
+
+
+
+
+
+
+
+
+Before we conclude this section and move on to service development witn _Marine_, let's expand our data structure like below and *parallelize* the use of the _greeter_ service:
 
 ```bash
 -- greeter_better_par.aqua
@@ -207,7 +222,16 @@ fldist \
 --node-id 12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA \
 run_air \
 -p sample-code/air-scripts/greeter_better_par.greeter.air \
- -d '{"data":[{"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA", "name": "Aqua", "greet": false}, {"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA", "name": "Marine", "greet": true} ]}' \
+ -d '{"payloads":[ {"service_id":"34e33e78-854e-41fe-99f2-4ec9726020d4", "node": "12D3KooWEFFCZnar1cUJQ3rMWjvPQg6yMV2aXWs2DkJNSRbduBWn", "name": "Marine", "greet": true}, {"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA", "name": "Aqua", "greet": false}]}' \
+ --generated
+ ```
+
+ ```bash
+fldist \
+--node-id 12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA \
+run_air \
+-p sample-code/air-scripts/greeter_better_par.greeter.air \
+ -d '{"payloads":[{"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA", "name": "Aqua", "greet": false}, {"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA", "name": "Aqua", "greet": false}]}' \
  --generated
  ```
 

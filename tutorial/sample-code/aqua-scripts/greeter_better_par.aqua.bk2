@@ -1,0 +1,21 @@
+service OpString("op"):
+    identity(s: string)
+
+service Greeting("service-id"):
+    greeting: string, bool -> string
+
+data InputMap:      --< 1
+  node: string
+  service_id: string
+  name: string
+  greet: bool
+
+func greeter(payloads: []InputMap) -> *string:    --< 2
+    results: *string      --< 3
+    for p <- payloads par:    --< 4                                                   
+      on p.node:
+        Greeting p.service_id
+        results <- Greeting.greeting(p.name, p.greet) --< 5
+    -- OpString.identity(results!)
+    -- OpString.identity(results!1)
+    <- results
