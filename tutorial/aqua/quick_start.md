@@ -103,7 +103,8 @@ See `sample-code/aqua-scripts//greeter_with_struct.aqua` for the code, which was
 ```bash
 -d '{"host_service":{"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA"}, "name": "Aquamarine", "greet": false}'
 ```
-and with that we can run our imporved version:
+
+and with that we can run our improved version:
 
 ```bash
 fldist \
