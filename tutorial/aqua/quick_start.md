@@ -50,7 +50,9 @@ You can find the _greeter.aqua_ file in the `../tutorial/sample-code/aqua-script
 aqua-cli --input aqua-scripts --output air-scripts -a
 ```
 
-where `../tutorial/sample-code/aqua-scripts` contains the aqua script we want to compile, i.e., _greeter/aqua_, and the compilation output files go to `../tutorial/sample-code/air-scripts`. Now that we have the compiled script, we can run it from the tutorial directory:
+where `../tutorial/sample-code/aqua-scripts` contains the aqua script we want to compile, i.e., _greeter/aqua_, and the compilation output files go to `../tutorial/sample-code/air-scripts`. Note that with the `-a` flag, the compiler generates aqua intermediary representation (AIR), where as without the flag, the compiler generates a Typescript file with the corresponding AIR embedded. See, for example. the `greeter.ts` file in the `air-script` directory.
+
+Now that we have the compiled script, we can run it from the tutorial directory:
 
 ```bash
 ./sample-code/run-scripts/run_greeter.sh

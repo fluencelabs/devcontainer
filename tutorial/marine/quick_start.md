@@ -221,7 +221,7 @@ pub fn greeting(name: String, greeter: bool) -> String {
 
 #[cfg(test)]
 mod tests {
-    use fluence_test::marine_test;
+    use marine_rs_sdk_test::marine_test;
 
     #[marine_test(config_path = "../Config.toml", modules_dir = "../artifacts")]
     fn test_greeting() {
