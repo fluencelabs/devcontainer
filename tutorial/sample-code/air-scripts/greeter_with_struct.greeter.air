@@ -13,28 +13,25 @@
       )
       (call %init_peer_id% ("getDataSrv" "host_service") [] host_service)
      )
-     (call -relay- ("op" "identity") [])
+     (call -relay- ("op" "noop") [])
     )
     (xor
-     (call host_service.$.node! (host_service.$.service_id! "greeting") [name greet] service_result)
      (seq
-      (seq
-       (call -relay- ("op" "identity") [])
-       (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
-      )
-      (call -relay- ("op" "identity") [])
+      (call -relay- ("op" "noop") [])
+      (call host_service.$.node! (host_service.$.service_id! "greeting") [name greet] service_result)
+     )
+     (seq
+      (call -relay- ("op" "noop") [])
+      (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 1])
      )
     )
    )
-   (call -relay- ("op" "identity") [])
+   (call -relay- ("op" "noop") [])
   )
   (xor
    (call %init_peer_id% ("callbackSrv" "response") [service_result])
    (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 2])
   )
  )
- (seq
-  (call -relay- ("op" "identity") [])
-  (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 3])
- )
+ (call %init_peer_id% ("errorHandlingSrv" "error") [%last_error% 3])
 )

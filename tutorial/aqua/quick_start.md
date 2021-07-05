@@ -34,7 +34,7 @@ func greeter(name: string, greet: bool, node: string, service_id: string) -> str
 Our script calls a remote service with the parameter values ouf our choice and then directs the result back to our local client application. More specifically,
 
 1. Our file is named *greeter.aqua* and double dashes, **--**, denote an inline **comment**
-2. We create an interface representation of the remote service
+2. We create an interface function to the remote service
    * _Greeting_ for "service-id", i.e., the id of the remote service, where the keyword **service** denotes a remote service binding
    * with the service function name _greeting_ and input and output types -- `string` for the _name_ and `bool` for the _greet_ parameter, respectively, and `string` for the output
 3. We create a callable function _greeter_ which
@@ -50,15 +50,10 @@ You can find the _greeter.aqua_ file in the `../tutorial/sample-code/aqua-script
 aqua-cli --input aqua-scripts --output air-scripts -a
 ```
 
-where `sample-code/aqua-scripts` contains the aqua script we want to compile, i.e., _greeter/aqua_, and the compilation output files go to `sample-code/air-scripts`. Now that we have the compiled script, we can use the command line utility `fldist` to execute the script.
+where `../tutorial/sample-code/aqua-scripts` contains the aqua script we want to compile, i.e., _greeter/aqua_, and the compilation output files go to `../tutorial/sample-code/air-scripts`. Now that we have the compiled script, we can run it from the tutorial directory:
 
 ```bash
-fldist \
---node-id 12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA \
-run_air \
--p sample-code/air-scripts/greeter.greeter.air \
- -d '{"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA", "name": "Aquamarine", "greet": true}' \
- --generated
+./sample-code/run-scripts/run_greeter.sh
  ```
  
  With the result:
@@ -69,44 +64,15 @@ run_air \
 ]
 ```
 
-We will discuss the `fldist` tool in some detail in the _deploy_ section of this tutorial. Suffice it to say, `fldist` is a command line client that handles the connection to a peer-to-peer network and provides a few utilities including the parameterization of our compiled script with our data. For the call shown above, we provided a json structure with the user data for population of the compiled Aqua script:
+Congratulations! You have successfully created, compiled and executed your first Aqua script.
 
-```bash
--d '{"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA", "name": "Aquamarine", "greet": true}'
-```
+Aqua is an expressive language developed for composing distributed services into applications. While a full review of Aqua is beyond the scope of this tutorial, see the [Aqua book](https://doc.fluence.dev/aqua-book/) instead, we want to introduce a few more fundamental concepts.
 
-where the
-
-* *node* key provides the peer id of the node hosting the *greeting* service
-* *service_id* key provides the identifier of the *greeting* service
-* *name* key provides the greeting value
-* *greet* key provides the boolean value for the (Hi, Bye) selection
-
-The result
-
-```bash
-[
-  "Hi, Aquamarine"
-]
-```
-
-certainly meets our expectations. Make sure to change the _greet_ parameter in the json string to *false* and run the `fldist` command from above again. Now, the result reads:
-
-```bash
-[
-  "Bye, Aquamarine"
-]
-```
-
-Congratulations! You have successfully created and compiled your first Aqua script for a deployed service and executed the script with the `fldist` command line tool. Moreover, you modified one of the user data values and once again utilized the deployed service to compute the result.
-
-Aqua is an expressive language developed for composing distributed services into applications. While a full review of Aqua is beyond the scope of this tutorial, we want to introduce a few more fundamental concepts.
-
-In our greeter func, we passed the node and service ids to the *greeter* function:
+In our greeter function, we passed the node and service ids to the *greeter* function:
 
 ```aqua
 -- greeter.aqua
--- snip
+-- <snip>
 func greeter(name: string, greet: bool, node: string, service_id: string) -> string:
     on node:                                                      
       Greeting service_id
@@ -114,10 +80,10 @@ func greeter(name: string, greet: bool, node: string, service_id: string) -> str
     <- service_result
 ```
 
-To improve both readability and future use of our script, we can declare a *NodeServicePair* composite data type for _node_ and *service id* with the **data** keyword and update the function signature and body accordingly:
+To improve both readability and future use of our script, we can declare a *NodeServicePair* data type for _node_ and *service id* with the **data** keyword and update the function signature and body accordingly:
 
  ```aqua
--- greeter_better.aqua
+-- greeter_with_struct.aqua
 service Greeting("service-id"):
     greeting: string, bool -> string
 
@@ -156,7 +122,7 @@ Which yields the expected result:
 ]
 ```
 
-Please note that Aqua is strongly typed. Let's illustrate type checking with a small change to our user data. That is, we replace the boolean value _true_  with an int -- a rather common substituion in some programming languages:
+Please note that Aqua is weakly typed. Let's illustrate type checking with a small change to our user data. That is, we replace the boolean value _true_  with an int -- a rather common substituion in some programming languages:
 
 ```bash
 fldist \
@@ -179,18 +145,10 @@ Something went wrong!
 
 So far so good. Of course, one service makes for sad-sack composition. Let's change that and utilize another service that takes an array of (_name_, _greet_) tuples and returns them as an array of structs. Let's call that service *echo_service* and think of it as a proxy for any number of services, e.g., a database query service.
 
-
-
-
-
-
-
-
-
 Before we conclude this section and move on to service development witn _Marine_, let's expand our data structure like below and *parallelize* the use of the _greeter_ service:
 
 ```bash
--- greeter_better_par.aqua
+-- greeter_with_struct_par.aqua
 service Greeting("service-id"):
     greeting: string, bool -> string
 
@@ -215,13 +173,13 @@ func greeter(payloads: []InputMap) -> *string:    --< 2
 4. We declare a **for** loop over our array of *InoutMap* and specify that the loop executes in **par**allell
 5. We commence as before but join service results in _results_ which we eventually return to our client application
 
-See `sample-code/aqua-scripts//greeter_better_par.aqua` for the code, which was compiled with the previous aqua-cli compile command to  `sample-code/air-scripts//greeter_better_par.greeter.air`. Before we can run our new and improved script, we need to update our user data structure once more to reflect the implementation changes:
+See `sample-code/aqua-scripts//greeter_with_struct_par.aqua` for the code, which was compiled with the previous aqua-cli compile command to  `sample-code/air-scripts//greeter_with_struct_par.greeter.air`. Before we can run our new and improved script, we need to update our user data structure once more to reflect the implementation changes:
 
 ```bash
 fldist \
 --node-id 12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA \
 run_air \
--p sample-code/air-scripts/greeter_better_par.greeter.air \
+-p sample-code/air-scripts/greeter_with_struct_par.greeter.air \
  -d '{"payloads":[ {"service_id":"34e33e78-854e-41fe-99f2-4ec9726020d4", "node": "12D3KooWEFFCZnar1cUJQ3rMWjvPQg6yMV2aXWs2DkJNSRbduBWn", "name": "Marine", "greet": true}, {"service_id":"c9a315de-4fe2-4730-8f40-9209428383bc", "node": "12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA", "name": "Aqua", "greet": false}]}' \
  --generated
  ```

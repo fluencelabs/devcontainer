@@ -34,7 +34,7 @@ If you want to install the [Fluence Examples](https://github.com/fluencelabs/exa
 
 The container also includes a Quick Start tutorial with introductions to
 
-* Developing decentralzied applications with `Aqua`
+* Developing decentralized applications with `Aqua`
 * Developing custom service modules with `Marine`
 * Managing custom service lifecyle with `fldist`
 
