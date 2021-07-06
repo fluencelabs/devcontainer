@@ -23,13 +23,12 @@ Figure 2: From Code To Module To Deployment
     %% state "something" as Wasm
 
     [*] --> Code
-    Code --> Test
     Code -->  Build
     Build --> Repl
     Config --> Repl
-    Config --> Test
-    Service --> Deploy
+    Build --> Test
     Build --> Deploy
+    Service --> Deploy
     Deploy --> [*]
 ```
 
