@@ -1,0 +1,13 @@
+-- greeter_better.aqua
+service Greeting("service-id"):
+    greeting: string, bool -> string
+
+data NodeServicePair:
+  node: string
+  service_id: string
+
+func greeter(name: string, greet: bool, host_service: NodeServicePair) -> string:
+    on host_service.node:                                                      
+      Greeting host_service.service_id
+      service_result <- Greeting.greeting(name, greet)
+    <- service_result
