@@ -9,7 +9,7 @@ DevContainer is a ready to use development environment for Fluence solutions wit
 
 ## How to install
 
-Docker and  optionally VSCode need to be avialble on your system. For Docker installation,
+Docker and  optionally VSCode need to be available on your system. For Docker installation,
 follow the [Get Docker](https://docs.docker.com/get-docker/) instructions for your OS. For VSCode, see [VSCocde](https://code.visualstudio.com/) for instructions.
 
 With Docker and VSCode in place:
@@ -36,7 +36,7 @@ The container also includes a Quick Start tutorial with introductions to
 
 * Developing decentralized applications with `Aqua`
 * Developing custom service modules with `Marine`
-* Managing custom service lifecyle with `fldist`
+* Managing custom service lifecycle with `fldist`
 
 If you encounter any problems or have suggestions, please open an issue or submit a PR. You can also reach out in
 [Discord](https://discord.com/invite/aR2AYErM) or [Telegram](https://t.me/fluence_project). For more detailed reference resources, see the [Fluence documentation](https://doc.fluence.dev/docs/) and [Aqua book](https://doc.fluence.dev/aqua-book/).
