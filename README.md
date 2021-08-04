@@ -38,5 +38,5 @@ The container also includes a Quick Start tutorial with introductions to
 * Developing custom service modules with `Marine`
 * Managing custom service lifecyle with `fldist`
 
-If you encounter any problems or have suggestions, please open an issue or submit a PR> You can also reach out in
+If you encounter any problems or have suggestions, please open an issue or submit a PR. You can also reach out in
 [Discord](https://discord.com/invite/aR2AYErM) or [Telegram](https://t.me/fluence_project). For more detailed reference resources, see the [Fluence documentation](https://doc.fluence.dev/docs/) and [Aqua book](https://doc.fluence.dev/aqua-book/).
