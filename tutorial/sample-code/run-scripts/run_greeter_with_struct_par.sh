@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -o errexit -o nounset -o pipefail
+#!/usr/bin/env -S bash -o errexit -o nounset -o pipefail
 
 fldist \
 --node-id 12D3KooWKnEqMfYo9zvfHmqTLpLdiHXPe4SVqUWcWHDJdFGrSmcA \
