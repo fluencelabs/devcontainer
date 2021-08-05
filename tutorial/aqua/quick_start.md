@@ -14,7 +14,7 @@ Our goal is to create applications from business logic available on different pe
   peer ->> client: return result 
 ```
 
-In order to accomplish our goal we use [Aqua](https://github.com/fluencelabs/aqua) -- an open source programming language purpose-designed to give developers an ergonomic tool to compose applications and backends from services deplyed on peer-to-peer network. For an in-depth introduction to and reference of Aqua, see the [Aqua book](https://doc.fluence.dev/aqua-book/).
+In order to accomplish our goal we use [Aqua](https://github.com/fluencelabs/aqua) – an open source programming language purpose-designed to give developers an ergonomic tool to compose applications and backends from services deplyed on peer-to-peer network. For an in-depth introduction to and reference of Aqua, see the [Aqua book](https://doc.fluence.dev/aqua-book/).
 
 For our Tour de Aqua, we use a greeting service which returns either "Hi, {name}" or "Bye, {name}" depending on the values of its signature parameters _name_, a string, and _greet_, a boolean. Armed with that information, we can now write our first Aqua script and get us some distributed greetings.
 
@@ -36,15 +36,15 @@ Our script calls a remote service with the parameter values ouf our choice and t
 1. Our file is named *greeter.aqua* and double dashes, `--`, denote an inline **comment**
 2. We create an interface function to the remote service
    * _Greeting_ for "service-id", i.e., the id of the remote service, where the keyword **service** denotes a remote service interface
-   * with the service function name _greeting_ and input and output types -- `string` for the _name_ and `bool` for the _greet_ parameter, respectively, and `string` for the output
+   * with the service function name _greeting_ and input and output types – `string` for the _name_ and `bool` for the _greet_ parameter, respectively, and `string` for the output
 3. We create a callable function _greeter_ which
-   * takes _name_, _greet_ , _node_, _service_ parameters -- _name_ and _greet_ are for our remote greeting service and _node_, _service_ are for Aqua to locate the _greeting_ service in the peer-to-peer network
+   * takes _name_, _greet_, _node_, _service_ parameters – _name_ and _greet_ are for our remote greeting service and _node_, _service_ are for Aqua to locate the _greeting_ service in the peer-to-peer network
    * specifies the target node hosting the target service, i.e. the node specified by _node_ parameters hosting the _greeting_ service identified by the *service_id* parameter
    * instantiates the _Greeting_ service binding to the provided *service_id* on _node_
    * calls the Greeting service function greeting with the _name_ and _greet_ values which produces the result *service_result*
    * return *service_result* to the local client application
   
-You can find the _greeter.aqua_ file in the `../tutorial/sample-code/aqua-scripts` folder. Now that we have our Aqua script, we compile it using the `aqua-cli`compiler. In the *sample-code* directory:
+You can find the _greeter.aqua_ file in the `../tutorial/sample-code/aqua-scripts` folder. Now that we have our Aqua script, we compile it using the `aqua-cli` compiler. In the *sample-code* directory:
 
 ```bash
 aqua-cli --input aqua-scripts --output air-scripts -a
@@ -98,7 +98,7 @@ func greeter(name: string, greet: bool, host_service:NodeServicePair) -> string:
     <- service_result
 ```
 
-See `sample-code/aqua-scripts//greeter_with_struct.aqua` for the code, which was compiled with the previous _aqua-cli_ compile command to  `sample-code/air-scripts//greeter_with_struct.greeter.air`. Before we can run our new and improved script, we need to update our user data structure to reflect the implementation changes. See `sample-code/run-scripts/run_greeter_with_struct.sh` for the details. Let's run it:
+See `sample-code/aqua-scripts/greeter_with_struct.aqua` for the code, which was compiled with the previous _aqua-cli_ compile command to  `sample-code/air-scripts/greeter_with_struct.greeter.air`. Before we can run our new and improved script, we need to update our user data structure to reflect the implementation changes. See `sample-code/run-scripts/run_greeter_with_struct.sh` for the details. Let's run it:
 
 ```bash
 ./sample-code/run-scripts/run_greeter_with_struct.sh
@@ -112,7 +112,7 @@ Which yields the expected result:
 ]
 ```
 
-Please note that Aqua is weakly typed and provides typechecking. Let's illustrate type checking with a small change to our user data. That is, we replace the boolean value _true_  with the integer 1 -- a rather common substitution in some programming languages:
+Please note that Aqua is weakly typed and provides typechecking. Let's illustrate type checking with a small change to our user data. That is, we replace the boolean value _true_  with the integer 1 — a rather common substitution in some programming languages:
 
 ```bash
 ./sample-code/run-scripts/run_greeter_bad_type.sh
@@ -157,7 +157,7 @@ func greeter(payloads: []InputMap) -> *string:    --< 2
 4. We declare a **for** loop over our array of *InoutMap* and specify that the loop executes in **par**allell
 5. We commence as before but join service results in _results_ which we eventually return to our client application
 
-See `sample-code/aqua-scripts//greeter_with_struct_par.aqua` for the code, which was compiled with the previous aqua-cli compile command to  `sample-code/air-scripts//greeter_with_struct_par.greeter.air`. Before we can run our new and improved script, we need to update our user data structure once more to reflect the implementation changes:
+See `sample-code/aqua-scripts/greeter_with_struct_par.aqua` for the code, which was compiled with the previous aqua-cli compile command to  `sample-code/air-scripts/greeter_with_struct_par.greeter.air`. Before we can run our new and improved script, we need to update our user data structure once more to reflect the implementation changes:
 
 ```bash
 ./sample-code/run-scripts/run_greeter_with_struct_par.sh
