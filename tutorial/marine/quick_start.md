@@ -57,19 +57,19 @@ The Cargo.tom file, see below, is pretty standard Rust fare except for:
 ```toml
 # Cargo.toml
 [package]
-name = "marine_tutorial"
+name = "greeter"
 version = "0.1.0"
 authors = ["boneyard93501 <4523011+boneyard93501@users.noreply.github.com>"]
 edition = "2018"
-description = "marine-tutorial, a Marine wasi module"
+description = "greeter, a Marine wasi module"
 license = "Apache-2.0"
 
 [[bin]]                       # <- 1
-name = "marine_tutorial"
+name = "greeter"
 path = "src/main.rs"
 
 [dependencies]                # <- 2
-marine-rs-sdk = { version="0.6.10", features=["logger"]}
+marine-rs-sdk = { version="0.6.11", features=["logger"]}
 log = "0.4.14"
 
 [dev-dependencies]            # <- 3
