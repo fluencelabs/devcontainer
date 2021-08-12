@@ -26,17 +26,9 @@ Congratulations, you now have a fully functional Fluence development environment
 If you want to install the [Fluence Examples](https://github.com/fluencelabs/examples), use the VSCode terminal:
 
 ```bash
- cd examples/url-downloader
-./build.sh
+./download_examples.sh
+cd examples
 ```
-
-## Quickstart Tutorial
-
-The container also includes a Quick Start tutorial with introductions to
-
-* Developing decentralized applications with `Aqua`
-* Developing custom service modules with `Marine`
-* Managing custom service lifecycle with `fldist`
 
 If you encounter any problems or have suggestions, please open an issue or submit a PR. You can also reach out in
 [Discord](https://discord.com/invite/aR2AYErM) or [Telegram](https://t.me/fluence_project). For more detailed reference resources, see the [Fluence documentation](https://doc.fluence.dev/docs/) and [Aqua book](https://doc.fluence.dev/aqua-book/).
