@@ -26,7 +26,7 @@ Congratulations, you now have a fully functional Fluence development environment
 If you want to install the [Fluence Examples](https://github.com/fluencelabs/examples), use the VSCode terminal:
 
 ```bash
-./download_examples.sh
+./.devcontainer/.aux/download_examples.sh
 cd examples
 ```
 
