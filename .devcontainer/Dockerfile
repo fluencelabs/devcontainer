@@ -2,7 +2,7 @@
 FROM fluencelabs/devcontainer
 
 RUN source ~/.bashrc && nvm use 14 && npm -g config set user root
-RUN source ~/.bashrc && npm install -g @fluencelabs/fldist @fluencelabs/aqua-cli
+RUN source ~/.bashrc && npm install -g @fluencelabs/fldist @fluencelabs/aqua
 
 COPY .devcontainer/.aux/download_examples.sh /download_examples.sh
 COPY .devcontainer/.aux/greetings.sh /greetings.sh

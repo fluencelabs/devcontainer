@@ -2,7 +2,8 @@
 
 DevContainer is a ready to use development environment for Fluence solutions with VSCode integration containing the following tools:
 
-* [`aqua-cli`](https://www.npmjs.com/package/@fluencelabs/aqua-cli) to compile [Aqua](https://doc.fluence.dev/aqua-book/) to AIR or Typescript
+* [`aqua`](https://www.npmjs.com/package/@fluencelabs/aqua) to compile [Aqua](https://doc.fluence.dev/aqua-book/) to AIR or Typescript
+* [`aqua run`](https://www.npmjs.com/package/@fluencelabs/aqua) to replace `fldist run_air` as a CLI client peer
 * [`fldist`](https://www.npmjs.com/package/@fluencelabs/fldist) to manage services and optionally execute compiled Aqua from the command line
 * [`marine`](https://crates.io/crates/marine) to compile services developed in Rust to the wasm32-wasi target
 * [`mrepl`](https://crates.io/crates/mrepl)  to run, test and debug Wasm services locally
@@ -37,6 +38,7 @@ The container also includes a Quick Start tutorial with introductions to
 * Developing decentralized applications with `Aqua`
 * Developing custom service modules with `Marine`
 * Managing custom service lifecycle with `fldist`
+* Managing service composition with `aqua`
 
 If you encounter any problems or have suggestions, please open an issue or submit a PR. You can also reach out in
 [Discord](https://discord.com/invite/aR2AYErM) or [Telegram](https://t.me/fluence_project). For more detailed reference resources, see the [Fluence documentation](https://doc.fluence.dev/docs/) and [Aqua book](https://doc.fluence.dev/aqua-book/).
